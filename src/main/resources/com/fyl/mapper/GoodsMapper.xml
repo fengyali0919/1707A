@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fyl.mapper.GoodsDao">
+
+	<select id="querylist" resultType="com.fyl.bean.Goods" parameterType="map">
+		select g.*,t.tname from goods g,type t where g.tid=t.tid 
+		
+		<if test="id  !='' and id !=null">
+			and g.id=#{id}
+		</if>
+		<if test="ename  !='' and ename !=null">
+			and  g.ename like '%${ename}%'
+		</if>
+		<if test="name  !='' and name !=null">
+			and  g.name like '%${name}%'
+		</if>
+		<if test="sdate  !='' and sdate !=null">
+			and g.sdate=#{sdate}
+		</if>
+		group by g.id	
+	</select>
+	
+	<insert id="add" parameterType="com.fyl.bean.Goods">
+		insert into goods
+		(ename,name,price,sdate,stime,pic,nian,qu)
+		values
+		(#{ename},#{name},#{price},#{sdate},#{stime},#{pic},#{nian},#{qu})
+	</insert>
+	
+	<select id="typelist" resultType="com.fyl.bean.Type">
+		select * from type
+	</select>
+	
+	<delete id="deletegoods" parameterType="string">
+		delete from goods where id in (${_parameter})
+	</delete>
+</mapper>
